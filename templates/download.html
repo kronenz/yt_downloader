@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>유튜브 영상 다운로드 받기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://www.youtube.com/embed/') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            opacity: 0.5;
+        }
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        }
+        .progress {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="/download" method="post">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="유튜브 URL" name="url" required>
+                                <button class="btn btn-outline-secondary" type="submit" onclick="document.body.style.backgroundImage = 'url(https://www.youtube.com/embed/' + document.getElementsByName('url')[0].value.split('/')[3] + ')'; document.body.style.backgroundSize = 'cover'; document.querySelector('.progress').style.display = 'block';">다운로드</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.onload = function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/download', true);
+            xhr.onload = function() {
+                if (this.status == 200) {
+                    document.querySelector('.progress').style.display = 'none';
+                }
+            }
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
